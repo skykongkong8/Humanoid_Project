@@ -1,0 +1,24 @@
+pip install tensorflow==2.3.0rc0
+
+https://github.com/hunglc007/tensorflow-yolov4-tflite -yolotfile
+https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT  -yolov4weights
+
+wieghts를 data 디렉토리 안에 저장
+
+
+cd C:\Users\공성식\Desktop\WORKSTATION\yoloy_tensorflow\tensorflow-yolov4-tflite-master\tensorflow-yolov4-tflite-master
+(아동)
+
+(최초 1회)
+python save_model.py --weights ./data/yolov4.weights --output ./checkpoints/yolov4-416 --input_size 416 --model yolov4
+(다크넷 가중치 파일을 tf을 위한 것으로 변환)
+python save_model.py --weights ./data/yolov4.weights --output ./checkpoints/yolov4-416-tflite --input_size 416 --model yolov4 --framework tflite
+python convert_tflite.py --weights ./checkpoints/yolov4-416-tflite --output ./checkpoints/yolov4-416.tflite
+(tfile 버전으로도 변환)
+
+
+
+python detect.py --weights ./checkpoints/yolov4-416 --size 416 --model yolov4 --image ./data/kite.jpg
+(data 디렉토리에 있는 이미지 혹은 이미지 경로를 지정해서 작동)
+
+ 
