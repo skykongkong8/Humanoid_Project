@@ -1,10 +1,11 @@
-from EARS import listen
-from MOUTH import talk_kr, talk_en, talk_es
-from MODE import mode_selection
+from ears import listen
+from mouth import talk_kr, talk_en, talk_es
+from mode import mode_selection, check_item
 import RPi.GPIO as g #RUNS AT RASPBERRYPI
 
-#AudioData = listen()
-#talk_kr(AudioData[1])
+"""basic format"""
+# AudioData = listen()
+# talk_kr(AudioData[1])
 
 global language
 language = 1
@@ -12,8 +13,8 @@ language = 1
 def universal_talk(string, language):
     """Defined under language selection
         1 : KOREAN
-        2 : ENGLISH
-        3 : SPANISH
+        0 : ENGLISH
+        2 : SPANISH
     """
     if language == 1:
         return talk_kr(string)
@@ -21,14 +22,6 @@ def universal_talk(string, language):
         return talk_en(string)
     elif language == 2:
         return talk_es(string)
-
-def check_item(my_list, word):
-    flag = False
-    for token in my_list:
-        if word in token:
-            flag = True
-            break
-    return flag
 
 def action_kr(mode_number, master):
     if mode_number == -1:
@@ -54,22 +47,42 @@ def acton_es(mode_number, master):
     elif mode_number == 2:
         universal_talk('Lo siento, el servicio solicitado aún no está listo.', language)
 
+def language_inquiry(flag):
+    if not flag:
+        universal_talk('Hello, please select your language', 2)
+    language_selection = listen()
+    if check_item(language_selection[0], 'english') or check_item(language_selection[0], 'English'):
+        universal_talk('You have chosen English. Welcome.', 0)
+        return 0
+    elif check_item(language_selection[1], '한국어') or check_item(language_selection[1], '한국') or check_item(language_selection[0], 'korea') or check_item(language_selection[0], 'korean'):
+        universal_talk('한국어를 선택하셨습니다. 만나서 반갑습니다.', 1)
+        return 1
+    elif check_item(language_selection[2], 'español') or check_item(language_selection[2], 'Español') or check_item(language_selection[1], '스페인어'):
+        universal_talk('Usted he seleccionado español. Bienvenido!', 2)
+        return 2
+    else:
+        universal_talk('Sorry, I could not understand what you said. Please tell your language again', 0)
+        language(True)
+
 
 """실행 코드"""
-g.setmode(g.BCM)
-touch_sensor = 26
-g.setup(touch_sensor, g.IN)
+if __name__ == "__main__":
+    g.setmode(g.BCM)
+    touch_sensor = 26
+    g.setup(touch_sensor, g.IN)
 
-try:
-    while True:
-        value = g.input(touch_sensor)
-        if value == True:
-            master = listen()[language]
-            mode_number = mode_selection(master)
-            action_kr(mode_number, master)
-        else:
-            pass
-except KeyboardInterrupt:
-    print('Goodbye.')
-finally:
-    g.cleanup()
+    language = language_inquiry(False)
+
+    try:
+        while True:
+            value = g.input(touch_sensor)
+            if value == True:
+                master = listen()[language]
+                mode_number = mode_selection(master)
+                action_kr(mode_number, master)
+            else:
+                pass
+    except KeyboardInterrupt:
+        print('Goodbye.')
+    finally:
+        g.cleanup()
