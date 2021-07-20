@@ -1,7 +1,22 @@
-from ears import listen
-from mouth import talk_kr, talk_en, talk_es
-from mode import mode_selection, check_item
-import RPi.GPIO as g #RUNS AT RASPBERRYPI
+from action import Action
+from organs.ears import Listen
+from organs.mouth import universal_talk
+from mode import universal_mode_selection, check_item, split_string
+from dataclasses import dataclass
+import os
+import sys
+import gc
+if os.name == 'nt':
+    import msvcrt
+else:
+    import tty
+    import termios
+
+""" __Simple Rules__
+    1. Ask for language
+    2. Listen
+    3. Action
+"""
 
 """basic format"""
 # AudioData = listen()
@@ -10,79 +25,67 @@ import RPi.GPIO as g #RUNS AT RASPBERRYPI
 global language
 language = 1
 
-def universal_talk(string, language):
-    """Defined under language selection
-        1 : KOREAN
-        0 : ENGLISH
-        2 : SPANISH
-    """
-    if language == 1:
-        return talk_kr(string)
-    elif language == 0:
-        return talk_en(string)
-    elif language == 2:
-        return talk_es(string)
-
-def action_kr(mode_number, master):
-    if mode_number == -1:
-        universal_talk('죄송해요, 무슨 말씀인지 잘 알아듣지 못했어요. 더욱 노력해서 다음 번엔 꼭 도와드리겠습니다.', language)
-    elif mode_number == 1:
-        universal_talk('안녕하세요, 무엇을 도와드릴까요?', language)
-    elif mode_number == 2:
-        universal_talk('죄송합니다. 아직 서비스 준비중입니다.', language)
-
-def action_en(mode_number, master):
-    if mode_number == -1:
-        universal_talk('Sorry, I could not understand what you said. I will try harder next time.', language)
-    elif mode_number == 1:
-        universal_talk('Hello, how can I help you?', language)
-    elif mode_number == 2:
-        universal_talk('Sorry, requested service is not readied yet.', language)
-
-def acton_es(mode_number, master):
-    if mode_number == -1:
-        universal_talk('Lo siento, no entendí bien lo que estabas diciendo. Haremos todo lo posible para ayudarle en la próxima vez.', language)
-    elif mode_number == 1:
-        universal_talk('¿Hola, en que puedo ayudarle?', language)
-    elif mode_number == 2:
-        universal_talk('Lo siento, el servicio solicitado aún no está listo.', language)
-
 def language_inquiry(flag):
-    if flag:
-        universal_talk('Hello, please select your language', 2)
-    language_selection = listen()
-    if check_item(language_selection[0], 'english') or check_item(language_selection[0], 'English'):
-        universal_talk('You have chosen English. Welcome.', 0)
+    """Ask for user's language"""
+    if not flag:
+        universal_talk('Hello, please tell me what language are you speaking in.', 0)
+    try:
+        language_selection = Listen().listen()
+        ENG = split_string(language_selection[0])
+        KOR = split_string(language_selection[1])
+        ESP = split_string(language_selection[2])
+    except:
+        universal_talk('Sorry, there were some error during the process. In this case, language is automatically selected to Korean', 0)
+        return 1
+    if check_item(ENG, 'english') or check_item(ESP, 'ingles'):
+        universal_talk('You chose English. Welcome.', 0)
         return 0
-    elif check_item(language_selection[1], '한국어') or check_item(language_selection[1], '한국') or check_item(language_selection[0], 'korea') or check_item(language_selection[0], 'korean'):
+    elif check_item(KOR, '한국어') or check_item(KOR, '한국') or check_item(ENG, 'korea') or check_item(ENG, 'korean') or check_item(ESP, 'coreano'):
         universal_talk('한국어를 선택하셨습니다. 만나서 반갑습니다.', 1)
         return 1
-    elif check_item(language_selection[2], 'español') or check_item(language_selection[2], 'Español') or check_item(language_selection[1], '스페인어'):
+    elif check_item(ESP, 'español') or check_item(KOR, '스페인어') or check_item(ENG, 'spanish'):
         universal_talk('Usted he seleccionado español. Bienvenido!', 2)
         return 2
     else:
-        universal_talk('Sorry, I could not understand what you said. Please tell your language again', 0)
-        language(True)
+        universal_talk('Sorry, I could not understand what you said. Please tell your language again.', 0)
+        language_inquiry(True)
+
+def getKey():
+    if os.name == 'nt':
+        """for windows"""
+        if sys.version_info[0] >= 3:
+            return msvcrt.getch().decode()
+        else:
+            return msvcrt.getch()
+    else:
+        pass
+        """For linux or mac"""
+        tty.setraw(sys.stdin.filno())
+        rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+        if rlist:
+            key = sys.stdin.read(1)
+        else:
+            key = ''
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+        return key
 
 
 """실행 코드"""
 if __name__ == "__main__":
-    g.setmode(g.BCM)
-    touch_sensor = 26
-    g.setup(touch_sensor, g.IN)
-
     language = language_inquiry(False)
-
+    print("Press 's' key to start")
     try:
         while True:
-            value = g.input(touch_sensor)
-            if value == True:
-                master = listen()[language]
-                mode_number = mode_selection(master)
-                action_kr(mode_number, master)
+            key = getKey()
+            if key == 's':
+                master = Listen().listen()[language]
+                mode_number = universal_mode_selection(master)
+                Action(language, master).universal_action(mode_number)
             else:
                 pass
     except KeyboardInterrupt:
         print('Goodbye.')
     finally:
-        g.cleanup()
+        """무언가 최종 작업을 하고 싶다면 여기에 코드를 추가하세요."""
+        gc.collect(generation=2)
+        pass
