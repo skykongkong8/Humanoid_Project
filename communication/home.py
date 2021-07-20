@@ -48,7 +48,7 @@ def acton_es(mode_number, master):
         universal_talk('Lo siento, el servicio solicitado aún no está listo.', language)
 
 def language_inquiry(flag):
-    if not flag:
+    if flag:
         universal_talk('Hello, please select your language', 2)
     language_selection = listen()
     if check_item(language_selection[0], 'english') or check_item(language_selection[0], 'English'):
