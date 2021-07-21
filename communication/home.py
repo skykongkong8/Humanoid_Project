@@ -92,5 +92,9 @@ if __name__ == "__main__":
     finally:
         """Add code here if you want to order any final tasks"""
         gc.collect(generation=2)
+        try:
+            os.remove('sample_1.mp3')
+        except:
+            pass
         print('Goodbye.')
         pass

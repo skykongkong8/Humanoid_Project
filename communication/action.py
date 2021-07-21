@@ -162,7 +162,7 @@ class EngAction(Action):
             universal_talk('Today is {0} {1} {2} {3}'.format(month_dict[time_list[0]], day_dict[time_list[1]], time_list[2], time_list[3]), self.language)
 
 
-    def _notification(self):
+    def _notification_ENG(self):
         for _ in range(3):
             universal_talk('Timer is over!', self.language)
     def timer_ENG(self):
@@ -171,7 +171,7 @@ class EngAction(Action):
             if (timer_seconds >=0):
                 universal_talk('your timer has just set. I will let you know for three times when it is done!', self.language)
                 sleep(int(timer_seconds))
-                self._notification()
+                self._notification_ENG()
                 # threading.Timer(timer_seconds, self._notification()).start()
             else:
                 universal_talk('Sorry, I could not understand your timer order. Please try it again.', self.language)
@@ -237,7 +237,7 @@ class KorAction(Action):
         time_list = clock()
         universal_talk('오늘은 {0}월 {1}일 {2}시 {3}분 입니다.'.format(time_list[0], time_list[1], time_list[2], time_list[3]), self.language)
     
-    def _notification(self):
+    def _notification_KOR(self):
         for i in range(3):
             universal_talk('타이머가 끝났습니다!', self.language)
 
@@ -247,7 +247,7 @@ class KorAction(Action):
             if (timer_seconds >0):
                 universal_talk('타이머가 설정되었습니다. 끝나면 세 번 알려드려요!'.format(timer_seconds), self.language)
                 sleep(int(timer_seconds))
-                self._notification()
+                self._notification_KOR()
                 # threading.Timer(timer_seconds, self._notification()).start()
             else:
                 universal_talk('잘못된 타이머 시간을 말씀하셨습니다. 타이머를 종료합니다.', self.language)
