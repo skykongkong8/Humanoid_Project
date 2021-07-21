@@ -3,7 +3,7 @@ import speech_recognition as sr
 """EARS MODULE FOR SPEECH RECOGNITION"""
 
 class Listen():
-    def listen():
+    def listen(self):
         # obtain audio from the microphone - PREREQUISITE: PyAduio 0.2.11 or later version
 
         """if you want to adjust the minimum energy threshold"""
@@ -17,10 +17,13 @@ class Listen():
                 audio = r.listen(source) 
 
         # recognize speech using Google Speech Recognition
-        eng = r.recognize_google(audio)
-        kor = r.recognize_google(audio, language = 'ko-KR')
-        esp = r.recognize_google(audio, language = 'es-ES')
-
+        try:
+            eng = r.recognize_google(audio)
+            kor = r.recognize_google(audio, language = 'ko-KR')
+            esp = r.recognize_google(audio, language = 'es-ES')
+        except:
+            print('Unknown Error! Please restart the program')
+            pass
         try:
             print("Google Speech Recognition thinks you said " + eng + '\n or ' + kor +'\n or '+ esp)
         except sr.UnknownValueError:
@@ -30,7 +33,7 @@ class Listen():
             print("Could not request results from Google Speech Recognition service; {0}".format(e))
         return [eng, kor, esp]
 
-#Notes for listen() and its internal fns - DETAILED REGULATION OPTIONS
+#Notes for listen() and its internal fns - DETAILED REGULATION OPTIONS - SSK
 
 #1 listen function changes 'source' into 'AudioData' instance. 'AudioData' can be 'recognized' by google data deisgnated languages
 #2 'timeout' param is maximum waiting time(seconds) before 'speech_recognition.WaitTimeoutError'

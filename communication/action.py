@@ -1,10 +1,19 @@
 from organs.mouth import universal_talk
 from application.covid import msg_handle, Daily_Patient
-from application.timer import timer
+from application.timer import timertime_KOR, timertime_ENG
 from application.clock import clock
-import application.brightness
-import application.volume 
+from application.brightness import brightness
+from application.volume import volume
 import threading
+
+# ACTION TASKS
+UNKNOWN_ERROR = -1
+GREETING = 0
+COVID = 1
+BRIGHTNESS = 2
+VOLUME = 3
+CLOCK = 4
+TIMER = 5
 
 class Action():
     def __init__(self, language, master):
@@ -13,80 +22,53 @@ class Action():
         self.master = master
  
     def action_en(self, mode_number):
-        """ Task Key Dictionary
-            -1 : Unknown Task Error
-            0 : Greeting
-            1 : Live Daily COVID Patient
-            2 : Brightness Control
-            3 : Volume Control
-            4 : Clock
-            5 : Timer
-        """
-        if mode_number == -1:
+        if mode_number == UNKNOWN_ERROR:
             universal_talk('Sorry, I could not understand what you said. I will try harder next time.', self.language)
-        elif mode_number == 0:
+        elif mode_number == GREETING:
             universal_talk('Hello, how can I help you?', self.language)
         else:
             eng_action = EngAction(self.language, self.master)
-            if mode_number == 1:
+            if mode_number == COVID:
                 return eng_action.covid_ENG()
-            elif mode_number == 2:
+            elif mode_number == BRIGHTNESS:
                 return eng_action.brightness_ENG()
-            elif mode_number == 3:
+            elif mode_number == VOLUME:
                 return eng_action.volume_ENG()
-            elif mode_number == 4:
-                return eng_action.covid_ENG()
-            elif mode_number == 5:
+            elif mode_number == CLOCK:
+                return eng_action.clock_ENG()
+            elif mode_number == TIMER:
                 return eng_action.timer_ENG()
             else:
                 universal_talk('Sorry, requested service is not readied yet.',self.language)
         
     def action_kr(self, mode_number):
-        """ Task Key Dictionary
-            -1 : Unknown Task Error
-            0 : Greeting
-            1 : Live Daily COVID Patient
-            2 : Brightness Control
-            3 : Volume Control
-            4 : Clock
-            5 : Timer
-        """
-        if mode_number == -1:
+        if mode_number == UNKNOWN_ERROR:
             universal_talk('죄송해요, 무슨 말씀인지 잘 알아듣지 못했어요. 더욱 노력해서 다음 번엔 꼭 도와드리겠습니다.', self.language)
-        elif mode_number == 0:
+        elif mode_number == GREETING:
             universal_talk('안녕하세요, 무엇을 도와드릴까요?', self.language)
         else:
             kor_action = KorAction(self.language, self.master)
-            if mode_number == 1:
+            if mode_number == COVID:
                 return kor_action.covid_KOR()
-            elif mode_number == 2:
+            elif mode_number == BRIGHTNESS:
                 return kor_action.brightness_KOR()
-            elif mode_number == 3:
+            elif mode_number == VOLUME:
                 return kor_action.volume_KOR()
-            elif mode_number == 4:
-                return kor_action.covid_KOR()
-            elif mode_number == 5:
+            elif mode_number == CLOCK:
+                return kor_action.clock_KOR()
+            elif mode_number == TIMER:
                 return kor_action.timer_KOR()
             else:
                 return universal_talk('죄송해요, 요청하신 서비스는 아직 서비스 준비중입니다.', self.language)
 
     def action_es(self, mode_number):
-        """ Task Key Dictionary
-            -1 : Unknown Task Error
-            0 : Greeting
-            1 : Live Daily COVID Patient
-            2 : Brightness Control
-            3 : Volume Control
-            4 : Clock
-            5 : Timer
-        """
-        if mode_number == -1:
+        if mode_number == UNKNOWN_ERROR:
             universal_talk('Lo siento, no entendí bien lo que estabas diciendo. Haremos todo lo posible para ayudarle en la próxima vez.', self.language)
-        elif mode_number == 0:
+        elif mode_number == GREETING:
             universal_talk('¿Hola, en que puedo ayudarle?', self.language)
-        elif mode_number == 1:
+        elif mode_number == COVID:
             universal_talk('Lo siento, el servicio solicitado aún no está listo.', self.language)
-        elif mode_number == 2:
+        elif mode_number == BRIGHTNESS:
             universal_talk('Lo siento, el servicio solicitado aún no está listo.',self.language)
 
     def universal_action(self, mode_number):
@@ -132,6 +114,7 @@ class EngAction(Action):
         """Connect brightness regulating application function here"""
         # HERE
         # Tip: you can use self.master for determing brightness UP or DOWN
+        brightness()
         universal_talk('Regulating the display brightness', self.language)
         pass
 
@@ -139,6 +122,7 @@ class EngAction(Action):
         """Connect volume regulating application function here"""
         # HERE
         # Tip: you can use self.master for determing volume UP or DOWN
+        volume()
         universal_talk('Regulating the system volume', self.language)
         pass
 
@@ -177,7 +161,7 @@ class EngAction(Action):
         for _ in range(3):
             universal_talk('Timer is over!', self.language)
     def timer_ENG(self):
-        timer_seconds = timer()
+        timer_seconds = timertime_ENG()
         try:
             if (timer_seconds >=0):
                 universal_talk('your timer has just set. I will let you know for three times when it is done!', self.language)
@@ -218,12 +202,14 @@ class KorAction(Action):
         """Connect brightness regulating application function here"""
         # Here
         # Tip: you can use self.master for determing brightness UP or DOWN
+        brightness()
         universal_talk('화면 밝기를 조정합니다.', self.language)
 
     def volume_KOR(self):
         """Connect volume regulating application function here"""
         # Here
         # Tip: you can use self.master for determing volume UP or DOWN
+        volume()
         universal_talk('시스템 볼륨을 조정합니다.', self.language)
 
     def clock_KOR(self):
@@ -235,7 +221,7 @@ class KorAction(Action):
             universal_talk('타이머가 끝났습니다!', self.language)
 
     def timer_KOR(self):
-        timer_seconds = timer()
+        timer_seconds = timertime_KOR()
         try:
             if (timer_seconds >=0):
                 universal_talk('타이머가 설정되었습니다. 끝나면 세 번 알려드려요!', self.language)
