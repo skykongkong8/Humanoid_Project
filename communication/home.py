@@ -74,7 +74,18 @@ def getKey():
 
 """Actual Home"""
 if __name__ == "__main__":
-    language = language_inquiry(False)
+    if len(sys.argv) != 1:
+        if sys.argv[1] == '-korean':
+            language = KOREAN
+        elif sys.argv[1] == '-english':
+            language = ENGLISH
+        elif sys.argv[1] == '-spanish':
+            language = ESPANOL
+        else:
+            print('Invalid language argument error! Set language to default.')
+            language = DEFAULT_LANGUAGE
+    else:
+        language = language_inquiry(False)
     print("Press 's' key to make an order")
     try:
         while True:
@@ -88,7 +99,7 @@ if __name__ == "__main__":
             else:
                 pass
     except KeyboardInterrupt:
-        print('Goodbye.')
+        print('Keyboard interrupt abort')
     finally:
         """Add code here if you want to order any final tasks"""
         gc.collect(generation=2)
