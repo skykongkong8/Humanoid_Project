@@ -40,6 +40,8 @@ def mode_selection_eng(string):
         return CLOCK
     elif check_item(my_list, 'timer'):
         return TIMER
+    elif check_item(my_list, 'joke') or check_item(my_list, 'jokes') or (check_item(my_list, 'funny') and (check_item(my_list, 'story') or check_item(my_list, 'stories'))):
+        return JOKE
 
     else:
         return UNKNOWN_ERROR
