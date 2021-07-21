@@ -40,17 +40,17 @@ def language_inquiry(flag)->int:
         universal_talk('Sorry, there were some error during the process. In this case, language is automatically selected to default. Current default language is Korean', ENGLISH)
         return DEFAULT_LANGUAGE
     if check_item(Eng, 'english') or check_item(Esp, 'ingles'):
-        universal_talk('You chose English. Welcome.', ENGLISH)
+        universal_talk('You chose English. Welcome. Please press s key to make me alert.', ENGLISH)
         return ENGLISH
     elif check_item(Kor, '한국어') or check_item(Kor, '한국') or check_item(Eng, 'korea') or check_item(Eng, 'korean') or check_item(Esp, 'coreano'):
-        universal_talk('한국어를 선택하셨습니다. 만나서 반갑습니다.', KOREAN)
+        universal_talk('한국어를 선택하셨습니다. 만나서 반갑습니다. 에스 키를 눌르면 활성화됩니다.', KOREAN)
         return KOREAN
     elif check_item(Esp, 'español') or check_item(Kor, '스페인어') or check_item(Eng, 'spanish'):
         universal_talk('Usted he seleccionado español. Bienvenido!', ESPANOL)
         return ESPANOL
     else:
-        universal_talk('Sorry, I could not understand what you said. Please tell your language again.', ENGLISH)
-        language_inquiry(True)
+        universal_talk('Sorry, I could not understand what you said. We only support English, Korean, and Spanish. Please tell me your language again.', ENGLISH)
+        return language_inquiry(True)
 
 def getKey():
     if os.name == 'nt':
@@ -81,7 +81,7 @@ if __name__ == "__main__":
             key = getKey()
             if key == 's':
                 master = Listen().listen()[language]
-                mode_number = universal_mode_selection(master)
+                mode_number = universal_mode_selection(master, language)
                 Action(language, master).universal_action(mode_number)
             else:
                 pass

@@ -1,9 +1,9 @@
-"""그저께, 어제, 오늘 코로나 확진자 수를 알려주는 프로그램"""
-
-"""#0 기타 사용 함수들"""
 from mode import check_item, split_string
+# covid.py
+# COVID 19 for today, yesterday, and day before yesterday in Republic Of Korea
 
 def msg_handle(string):
+    """Sort for data, double check with isit_covid"""
     isit_covid = False
     day = 0 #(0: default, 1: 오늘, 2:어제, 3:그저께)
     my_list = split_string(string)
@@ -27,13 +27,63 @@ def msg_handle(string):
 
 
 
-"""#1 Open API 정보를 받아오는 부분"""
-
-def Daily_Patient():
+def today_Patient():
     import urllib.parse
     import requests
     from datetime import datetime, timedelta
 
+    today = datetime.now()
+    past = datetime.now()-timedelta(days=3)
+
+    servicekey = "A%2FE1M5JtX4S60k6oQ5Es6fRclxobTZqXFE3YjgWiWcqH4O6888F9UclbkgxgwEEDTfhOzL8%2BFRgmmVX0hRPAxg%3D%3D"
+    decoded_key = urllib.parse.unquote(servicekey)
+    #print(decoded_key)
+
+    service_url = "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson"
+    #딕셔너리 저장할 때 사이트에 있는 파라미터 '그대로' 적을 것
+    params = {
+        "ServiceKey" : decoded_key,
+        "pageNo" : "1",
+        "numOfRows" : "10",
+        "startCreateDt" : "{}{}{}".format(str(past.year), str(past.month).zfill(2), str(past.day).zfill(2)),
+        "endCreateDt" : "{}{}{}".format(str(today.year), str(today.month).zfill(2), str(today.day).zfill(2))
+    }
+    resp = requests.get(service_url, params = params)
+    # print(resp.content)
+
+    import xml.etree.ElementTree as ET
+
+    resp = requests.get(service_url, params = params)
+    root = ET.fromstring(resp.content)
+
+    for element in root:
+        #print(element.tag, element.attrib)
+        if element.tag == 'header':
+            header = list(element)
+        elif element.tag == 'body':
+            body = list(element)
+
+    items = body[0]
+    decideCnt = []
+    # stateDt = []
+
+    for item in items:
+        for item_tag in item:
+            #print(item_tag.tag)
+            if item_tag.tag == 'decideCnt':
+                decideCnt.append(int(item_tag.text))
+            # if item_tag.tag == 'stateDt':
+            #     stateDt.append(item_tag.text)
+    decideCnt.reverse()
+    daily_patient = []
+    for i in range(1,len(decideCnt)):
+        daily_patient.append(decideCnt[i]-decideCnt[i-1])
+    return daily_patient
+
+def past_Patient():
+    import urllib.parse
+    import requests
+    from datetime import datetime, timedelta
 
     yesterday = datetime.now()-timedelta(days=1)
     past = datetime.now()-timedelta(days=4)
@@ -60,7 +110,7 @@ def Daily_Patient():
     root = ET.fromstring(resp.content)
 
     for element in root:
-        print(element.tag, element.attrib)
+        #print(element.tag, element.attrib)
         if element.tag == 'header':
             header = list(element)
         elif element.tag == 'body':
@@ -68,14 +118,25 @@ def Daily_Patient():
 
     items = body[0]
     decideCnt = []
+    # stateDt = []
 
     for item in items:
         for item_tag in item:
-            print(item_tag.tag)
+            #print(item_tag.tag)
             if item_tag.tag == 'decideCnt':
                 decideCnt.append(int(item_tag.text))
+            # if item_tag.tag == 'stateDt':
+            #     stateDt.append(item_tag.text)
     decideCnt.reverse()
     daily_patient = []
     for i in range(1,len(decideCnt)):
         daily_patient.append(decideCnt[i]-decideCnt[i-1])
     return daily_patient
+
+def Daily_Patient():
+    try:
+        return today_Patient()
+    except:
+        return past_Patient()
+
+# print(Daily_Patient())

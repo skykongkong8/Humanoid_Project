@@ -1,4 +1,9 @@
-# ACTION TASKS
+# mode.py
+# Originally, mode selection should be done by NLP, analyzing the given sentence by syntax. 
+# However in this case, since the system is simple enough, we just use classification function like following...
+
+
+"""ACTION TASKS"""
 UNKNOWN_ERROR = -1
 GREETING = 0
 COVID = 1

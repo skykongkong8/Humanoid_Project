@@ -31,6 +31,9 @@ class Listen():
             pass
         except sr.RequestError as e:
             print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        except:
+            print('Unknown Error')
+            pass
         return [eng, kor, esp]
 
 #Notes for listen() and its internal fns - DETAILED REGULATION OPTIONS - SSK

@@ -4,9 +4,10 @@ from application.timer import timertime_KOR, timertime_ENG
 from application.clock import clock
 from application.brightness import brightness
 from application.volume import volume
-import threading
+from time import sleep
+# import threading
 
-# ACTION TASKS
+"""ACTION TASKS"""
 UNKNOWN_ERROR = -1
 GREETING = 0
 COVID = 1
@@ -161,11 +162,13 @@ class EngAction(Action):
         for _ in range(3):
             universal_talk('Timer is over!', self.language)
     def timer_ENG(self):
-        timer_seconds = timertime_ENG()
+        timer_seconds = timertime_ENG(self.master)
         try:
             if (timer_seconds >=0):
                 universal_talk('your timer has just set. I will let you know for three times when it is done!', self.language)
-                threading.Timer(timer_seconds, self._notification())
+                sleep(int(timer_seconds))
+                self._notification()
+                # threading.Timer(timer_seconds, self._notification()).start()
             else:
                 universal_talk('Sorry, I could not understand your timer order. Please try it again.', self.language)
         except:
@@ -221,11 +224,13 @@ class KorAction(Action):
             universal_talk('타이머가 끝났습니다!', self.language)
 
     def timer_KOR(self):
-        timer_seconds = timertime_KOR()
+        timer_seconds = timertime_KOR(self.master)
         try:
-            if (timer_seconds >=0):
-                universal_talk('타이머가 설정되었습니다. 끝나면 세 번 알려드려요!', self.language)
-                threading.Timer(timer_seconds, self._notification())
+            if (timer_seconds >0):
+                universal_talk('타이머가 설정되었습니다. 끝나면 세 번 알려드려요!'.format(timer_seconds), self.language)
+                sleep(int(timer_seconds))
+                self._notification()
+                # threading.Timer(timer_seconds, self._notification()).start()
             else:
                 universal_talk('잘못된 타이머 시간을 말씀하셨습니다. 타이머를 종료합니다.', self.language)
         except:
