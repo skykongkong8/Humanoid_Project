@@ -11,6 +11,7 @@ BRIGHTNESS = 2
 VOLUME = 3
 CLOCK = 4
 TIMER = 5
+JOKE = 6
 
 def check_item(my_list, word):
     flag = False
@@ -58,6 +59,8 @@ def mode_selection_kor(string):
         return CLOCK
     elif check_item(my_list, '타이머') or (check_item(my_list, '후에') and check_item(my_list, '알려줘')):
         return TIMER
+    elif check_item(my_list, '농담') or ((check_item(my_list, '재미있는') or check_item(my_list, '재밌는')) and (check_item(my_list, '이야기') or check_item(my_list, '얘기'))):
+        return JOKE
     else:
         return UNKNOWN_ERROR
 

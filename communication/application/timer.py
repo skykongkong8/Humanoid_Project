@@ -41,3 +41,6 @@ def timertime_ENG(master):
     except:
         t = -1
     return t     
+
+def timertime_ESP(master):
+    pass

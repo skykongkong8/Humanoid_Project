@@ -1,6 +1,7 @@
 from mode import check_item, split_string
 # covid.py
 # COVID 19 for today, yesterday, and day before yesterday in Republic Of Korea
+# 주석 처리된 부분은 추후 오류점검에 도움이 되므로, 구태여 지우지 말 것
 
 def msg_handle(string):
     """Sort for data, double check with isit_covid"""

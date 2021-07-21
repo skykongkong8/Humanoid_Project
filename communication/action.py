@@ -4,6 +4,7 @@ from application.timer import timertime_KOR, timertime_ENG
 from application.clock import clock
 from application.brightness import brightness
 from application.volume import volume
+from application.joke import joke
 from time import sleep
 # import threading
 
@@ -15,6 +16,7 @@ BRIGHTNESS = 2
 VOLUME = 3
 CLOCK = 4
 TIMER = 5
+JOKE = 6
 
 class Action():
     def __init__(self, language, master):
@@ -59,6 +61,8 @@ class Action():
                 return kor_action.clock_KOR()
             elif mode_number == TIMER:
                 return kor_action.timer_KOR()
+            elif mode_number == JOKE:
+                return kor_action.joke_KOR()
             else:
                 return universal_talk('죄송해요, 요청하신 서비스는 아직 서비스 준비중입니다.', self.language)
 
@@ -173,7 +177,21 @@ class EngAction(Action):
                 universal_talk('Sorry, I could not understand your timer order. Please try it again.', self.language)
         except:
             universal_talk('Sorry, I could not understand your timer order. Please try it again.', self.language)
-
+    
+    def joke_ENG(self):
+        joke_num = joke()
+        joke_list = [
+            ['What do you call a factory that makes okay products?', 'A satisfactory.'],
+            ['What did baby corn say to mama corn?', 'where is pop corn?'],
+            ['what does a sprinter eat before a race?', 'they fast!'],
+            ['What do you call someone with no body and no nose?', 'Well... nobody knows.'],
+            ['How many tickles does it take to make an octopus laugh?', 'Ten tickles!'],
+            ['What do you call chess that is not yours?', 'Nacho cheese.']
+        ]
+        for i in range(len(joke_list[joke_num-1])):
+            universal_talk(joke_list[joke_num-1][i], self.language)
+        sleep(1)
+        universal_talk('ha ha ha', self.language)
 
 
 class KorAction(Action):
@@ -235,6 +253,20 @@ class KorAction(Action):
                 universal_talk('잘못된 타이머 시간을 말씀하셨습니다. 타이머를 종료합니다.', self.language)
         except:
             universal_talk('죄송해요, 타이머 설정 시간을 잘 이해하지 못했습니다. 타이머를 종료합니다.', self.language)
+    
+    def joke_KOR(self):
+        joke_num = joke()
+        joke_list = [['경찰관에는 어떤 혈액형이 가장 많을까요?','정답은 비형~ 비형~'],
+            ['차 열쇠의 색깔은?', '정답은 카 키 색'],
+            ['신하가 왕에게 공을 던지며 하는 말은?','정답은 송구하옵니다.. 전하..'],
+            ['자동차를 톡하고 치면 뭘까요?','정답은 카 톡 '],
+            ['침대를 밀고 돌리면 뭘까요?', '정답은 배드 민 턴'],
+            ['결정장애가 많은 대학은 어디일까요?', '정답은 고려 대학교']
+           ]
+        for i in range(len(joke_list[joke_num-1])):
+            universal_talk(joke_list[joke_num-1][i], self.language)
+        sleep(1)
+        universal_talk('하 하 하', self.language)
 
 
 

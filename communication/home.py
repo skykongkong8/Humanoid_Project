@@ -75,7 +75,7 @@ def getKey():
 """Actual Home"""
 if __name__ == "__main__":
     language = language_inquiry(False)
-    print("Press 's' key to start")
+    print("Press 's' key to make an order")
     try:
         while True:
             key = getKey()
@@ -83,6 +83,8 @@ if __name__ == "__main__":
                 master = Listen().listen()[language]
                 mode_number = universal_mode_selection(master, language)
                 Action(language, master).universal_action(mode_number)
+            if key == 'e':
+                break
             else:
                 pass
     except KeyboardInterrupt:
@@ -90,4 +92,5 @@ if __name__ == "__main__":
     finally:
         """Add code here if you want to order any final tasks"""
         gc.collect(generation=2)
+        print('Goodbye.')
         pass
