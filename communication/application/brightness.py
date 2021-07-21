@@ -1,0 +1,1 @@
+"""Brightness regulating application"""
