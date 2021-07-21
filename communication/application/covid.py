@@ -19,7 +19,7 @@ def msg_handle(string):
     elif check_item(my_list, '어제'):
         day = 2
     #3 그저께
-    elif check_item(my_list, '그저께'):
+    elif check_item(my_list, '그저께') or check_item(my_list, '어저께'):
         day = 3
     else:
         print('무슨 말인지 알아들을 수 없습니다!')

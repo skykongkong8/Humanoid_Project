@@ -72,7 +72,7 @@ def getKey():
         return key
 
 
-"""실행 코드"""
+"""Actual Home"""
 if __name__ == "__main__":
     language = language_inquiry(False)
     print("Press 's' key to start")
