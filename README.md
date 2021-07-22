@@ -7,3 +7,5 @@ SpeechRecognition lib @AI_device_with_RaspberryPi
 
 #3 MOUTH
 gTTS, os and pygame library @ AI_device_with_RaspberryPi
+
+License is for communication directory only. YOLO directory is just for personal trial by far.
