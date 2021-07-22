@@ -185,7 +185,7 @@ class EngAction(Action):
             ['what does a sprinter eat before a race?', 'they fast!'],
             ['What do you call someone with no body and no nose?', 'Well... nobody knows.'],
             ['How many tickles does it take to make an octopus laugh?', 'Ten tickles!'],
-            ['What do you call chess that is not yours?', 'Nacho cheese.']
+            ['What do you call the cheese that is not yours?', 'Nacho cheese.']
         ]
         for i in range(len(joke_list[joke_num-1])):
             universal_talk(joke_list[joke_num-1][i], self.language)
