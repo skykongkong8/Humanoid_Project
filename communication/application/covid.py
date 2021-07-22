@@ -1,5 +1,10 @@
 from home import ENGLISH, ESPANOL, KOREAN
 from mode import check_item, split_string
+import urllib.parse
+import requests
+from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
+
 # covid.py
 # COVID 19 for today, yesterday, and day before yesterday in Republic Of Korea
 # 주석 처리된 부분은 추후 오류점검에 도움이 되므로, 구태여 지우지 말 것
@@ -62,10 +67,6 @@ def msg_handle_ESP(string):
 
 
 def today_Patient():
-    import urllib.parse
-    import requests
-    from datetime import datetime, timedelta
-
     today = datetime.now()
     past = datetime.now()-timedelta(days=3)
 
@@ -84,9 +85,6 @@ def today_Patient():
     }
     resp = requests.get(service_url, params = params)
     # print(resp.content)
-
-    import xml.etree.ElementTree as ET
-
     resp = requests.get(service_url, params = params)
     root = ET.fromstring(resp.content)
 
@@ -115,10 +113,6 @@ def today_Patient():
     return daily_patient
 
 def past_Patient():
-    import urllib.parse
-    import requests
-    from datetime import datetime, timedelta
-
     yesterday = datetime.now()-timedelta(days=1)
     past = datetime.now()-timedelta(days=4)
 
@@ -137,9 +131,6 @@ def past_Patient():
     }
     resp = requests.get(service_url, params = params)
     # print(resp.content)
-
-    import xml.etree.ElementTree as ET
-
     resp = requests.get(service_url, params = params)
     root = ET.fromstring(resp.content)
 

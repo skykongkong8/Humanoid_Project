@@ -102,11 +102,11 @@ class EngAction(Action):
             if universal_msg_handle(what_said)[0]:
                 if universal_msg_handle(what_said)[1] == 0:
                     universal_talk('Sorry, I only know about today, yesterday, and day before yesterday. Search internet for more detailed information.',self.language)
-                elif universal_msg_handle(what_said)[1] == 1:
+                elif universal_msg_handle(what_said)[1] == 1: # today
                     universal_talk('Reported COVID patient number for today is {}.'.format(Daily_Patient()[-1]),self.language)
-                elif universal_msg_handle(what_said)[1] == 2:
+                elif universal_msg_handle(what_said)[1] == 2: # yesterday
                     universal_talk('Reported COVID patient number for yesterday is {}.'.format(Daily_Patient()[-2]),self.language)
-                elif universal_msg_handle(what_said)[1] == 3:
+                elif universal_msg_handle(what_said)[1] == 3: # day before yesterday
                     universal_talk('Reported COVID patient number for day before yesterday is {}.'.format(Daily_Patient()[-3]),self.language)
             else:
                 universal_talk('Sorry, I only know about COVID patient number, please search internet for more information.',self.language)

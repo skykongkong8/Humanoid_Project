@@ -4,6 +4,9 @@
 # However in this case, since the system is simple enough, we just use classification function like following...
 
 
+
+from home import ENGLISH, ESPANOL, KOREAN
+
 """ACTION TASKS"""
 UNKNOWN_ERROR = -1
 GREETING = 0
@@ -93,9 +96,9 @@ def universal_mode_selection(string, language):
         2 : Spanish
 
     """
-    if language == 0:
+    if language == ENGLISH:
         return mode_selection_eng(string)
-    elif language == 1:
+    elif language == KOREAN:
         return mode_selection_kor(string)
-    elif language == 2:
+    elif language == ESPANOL:
         return mode_selection_esp(string)
