@@ -1,4 +1,4 @@
-from mode import UNKNOWN_ERROR, GREETING, COVID, BRIGHTNESS, VOLUME, CLOCK, TIMER, JOKE, HOUSE_PARTY_PROTOCOL
+from constant_variables import*
 from organs.mouth import universal_talk
 from application.covid import universal_msg_handle, Daily_Patient
 from application.timer import universal_timertime
@@ -98,15 +98,15 @@ class EngAction(Action):
     def covid_ENG(self):
         print('Press ctrl+C to quit')
         try:
-            what_said = self.master
-            if universal_msg_handle(what_said)[0]:
-                if universal_msg_handle(what_said)[1] == 0:
+            covid_output = universal_msg_handle(self.master, self.language)
+            if covid_output[0]:
+                if covid_output[1] == 0:
                     universal_talk('Sorry, I only know about today, yesterday, and day before yesterday. Search internet for more detailed information.',self.language)
-                elif universal_msg_handle(what_said)[1] == 1: # today
+                elif covid_output[1] == 1: # today
                     universal_talk('Reported COVID patient number for today is {}.'.format(Daily_Patient()[-1]),self.language)
-                elif universal_msg_handle(what_said)[1] == 2: # yesterday
+                elif covid_output[1] == 2: # yesterday
                     universal_talk('Reported COVID patient number for yesterday is {}.'.format(Daily_Patient()[-2]),self.language)
-                elif universal_msg_handle(what_said)[1] == 3: # day before yesterday
+                elif covid_output[1] == 3: # day before yesterday
                     universal_talk('Reported COVID patient number for day before yesterday is {}.'.format(Daily_Patient()[-3]),self.language)
             else:
                 universal_talk('Sorry, I only know about COVID patient number, please search internet for more information.',self.language)
@@ -155,10 +155,10 @@ class EngAction(Action):
             6 : 'sixth',
             7 : 'seventh'
         }
-        if time_list[1] > 7:
-            universal_talk('Today is {0} {1} {2} {3}'.format(month_dict[time_list[0]], time_list[1], time_list[2], time_list[3]), self.language)
+        if time_list[2] > 7:
+            universal_talk('Today is {0} {1} {2} {3}'.format(time_list[0], month_dict[time_list[1]], time_list[2], time_list[3]), self.language)
         else:
-            universal_talk('Today is {0} {1} {2} {3}'.format(month_dict[time_list[0]], day_dict[time_list[1]], time_list[2], time_list[3]), self.language)
+            universal_talk('Today is {0} {1} {2} {3}'.format(time_list[0], month_dict[time_list[1]], day_dict[time_list[2]], time_list[3]), self.language)
 
 
     def _notification_ENG(self):
@@ -211,15 +211,15 @@ class KorAction(Action):
     def covid_KOR(self):
         print('Press ctrl+C to quit')
         try:
-            what_said = self.master
-            if universal_msg_handle(what_said)[0]:
-                if universal_msg_handle(what_said)[1] == 0:
+            covid_output = universal_msg_handle(self.master, self.language)
+            if covid_output[0]:
+                if covid_output[1] == 0:
                     universal_talk('죄송해요, 오늘, 어제, 그저께에 대한 정보만 지원하고 있습니다. 더 자세한 정보는 보건복지부 홈페이지를 참조하여 주세요.', self.language)
-                elif universal_msg_handle(what_said)[1] == 1:
+                elif covid_output[1] == 1:
                     universal_talk('오늘 코로나19 확진자 수는 {}명입니다.'.format(Daily_Patient()[-1]), self.language)
-                elif universal_msg_handle(what_said)[1] == 2:
+                elif covid_output[1] == 2:
                     universal_talk('어제 코로나19 확진자 수는 {}명입니다.'.format(Daily_Patient()[-2]), self.language)
-                elif universal_msg_handle(what_said)[1] == 3:
+                elif covid_output[1] == 3:
                     universal_talk('그저께 코로나19 확진자 수는 {}명입니다.'.format(Daily_Patient()[-3]), self.language)
             else:
                 universal_talk('죄송해요, 코로나 확진자 수 알림 기능만을 지원하고 있습니다. 다른 답변은 드릴 수가 없네요.', self.language)
@@ -281,6 +281,7 @@ class KorAction(Action):
     def house_party_protocol_KOR(self):
         universal_talk('제가 할 수 있는 것들 중 몇 가지만 소개드릴게요. 예를 들어,', self.language)
         self.master += ' 오늘'
+        self.master += ' 코로나'
         self.covid_KOR()
         self.clock_KOR()
         self.joke_KOR()
