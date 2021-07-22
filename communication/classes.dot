@@ -1,0 +1,11 @@
+digraph "classes" {
+charset="utf-8"
+rankdir=BT
+"0" [label="{Action|language\lmaster\l|action_en(mode_number)\laction_es(mode_number)\laction_kr(mode_number)\luniversal_action(mode_number)\l}", shape="record"];
+"1" [label="{EngAction|master\l|brightness_ENG()\lclock_ENG()\lcovid_ENG()\lhouse_party_protocol_ENG()\ljoke_ENG()\ltimer_ENG()\lvolume_ENG()\l}", shape="record"];
+"2" [label="{EspAction|\l|}", shape="record"];
+"3" [label="{KorAction|master\l|brightness_KOR()\lclock_KOR()\lcovid_KOR()\lhouse_party_protocol_KOR()\ljoke_KOR()\ltimer_KOR()\lvolume_KOR()\l}", shape="record"];
+"1" -> "0" [arrowhead="empty", arrowtail="none"];
+"2" -> "0" [arrowhead="empty", arrowtail="none"];
+"3" -> "0" [arrowhead="empty", arrowtail="none"];
+}

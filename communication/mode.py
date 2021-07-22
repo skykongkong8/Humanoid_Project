@@ -5,19 +5,9 @@
 
 
 
-from home import ENGLISH, ESPANOL, KOREAN
+from constant_variables import*
 
-"""ACTION TASKS"""
-UNKNOWN_ERROR = -1
-GREETING = 0
-COVID = 1
-BRIGHTNESS = 2
-VOLUME = 3
-CLOCK = 4
-TIMER = 5
-JOKE = 6
 
-HOUSE_PARTY_PROTOCOL = 999
 
 def check_item(my_list, word):
     flag = False
@@ -71,7 +61,7 @@ def mode_selection_kor(string):
         return TIMER
     elif check_item(my_list, '농담') or ((check_item(my_list, '재미있는') or check_item(my_list, '재밌는')) and (check_item(my_list, '이야기') or check_item(my_list, '얘기'))):
         return JOKE
-    elif (check_item(my_list, '전부') or check_item(my_list, '다')) and check_item(my_list, '보여줘'):
+    elif (check_item(my_list, '전부') or check_item(my_list, '다') or (check_item(my_list, '할') and check_item(my_list, '수') and check_item(my_list, '있는지'))) and (check_item(my_list, '보여') and check_item(my_list, '줘')):
         return HOUSE_PARTY_PROTOCOL
     else:
         return UNKNOWN_ERROR

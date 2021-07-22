@@ -1,4 +1,4 @@
-from home import ENGLISH, ESPANOL, KOREAN
+from constant_variables import*
 from mode import check_item, split_string
 import urllib.parse
 import requests

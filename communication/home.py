@@ -10,12 +10,8 @@ if os.name == 'nt':
 else:
     import tty
     import termios
+from constant_variables import*
 
-#LANGUAGE CLASSFICATION
-DEFAULT_LANGUAGE = 1 # Current default language is Korean.
-ENGLISH = 0
-KOREAN = 1
-ESPANOL = 2
 
 """ __Simple Rules__
     1. Ask for language

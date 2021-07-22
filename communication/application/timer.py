@@ -1,4 +1,4 @@
-from home import ENGLISH, KOREAN, ESPANOL
+from constant_variables import*
 import re
 
 def universal_timertime(master, language):
