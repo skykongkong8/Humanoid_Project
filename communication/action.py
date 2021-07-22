@@ -1,7 +1,7 @@
 from mode import UNKNOWN_ERROR, GREETING, COVID, BRIGHTNESS, VOLUME, CLOCK, TIMER, JOKE, HOUSE_PARTY_PROTOCOL
 from organs.mouth import universal_talk
 from application.covid import universal_msg_handle, Daily_Patient
-from application.timer import timertime_KOR, timertime_ENG
+from application.timer import universal_timertime
 from application.clock import clock
 from application.brightness import brightness
 from application.volume import volume
@@ -165,7 +165,7 @@ class EngAction(Action):
         for _ in range(3):
             universal_talk('Timer is over!', self.language)
     def timer_ENG(self):
-        timer_seconds = timertime_ENG(self.master)
+        timer_seconds = universal_timertime(self.master, self.language)
         try:
             if (timer_seconds >=0):
                 universal_talk('your timer has just set. I will let you know for three times when it is done!', self.language)
@@ -251,7 +251,7 @@ class KorAction(Action):
             universal_talk('타이머가 끝났습니다!', self.language)
 
     def timer_KOR(self):
-        timer_seconds = timertime_KOR(self.master)
+        timer_seconds = universal_timertime(self.master, self.language)
         try:
             if (timer_seconds >0):
                 universal_talk('타이머가 설정되었습니다. 끝나면 세 번 알려드려요!'.format(timer_seconds), self.language)

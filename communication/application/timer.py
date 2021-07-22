@@ -1,4 +1,13 @@
+from home import ENGLISH, KOREAN, ESPANOL
 import re
+
+def universal_timertime(master, language):
+    if language == ENGLISH:
+        return timertime_ENG(master)
+    elif language == KOREAN:
+        return timertime_KOR(master)
+    elif language == ESPANOL:
+        return timertime_ESP(master)
 
 def timertime_KOR(master):
     """extract time property from master order"""
