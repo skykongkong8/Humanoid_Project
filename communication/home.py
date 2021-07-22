@@ -12,7 +12,7 @@ else:
     import termios
 
 #LANGUAGE CLASSFICATION
-DEFAULT_LANGUAGE = 1
+DEFAULT_LANGUAGE = 1 # Current default language is Korean.
 ENGLISH = 0
 KOREAN = 1
 ESPANOL = 2
@@ -43,7 +43,7 @@ def language_inquiry(flag)->int:
         universal_talk('You chose English. Welcome. Please press s key to make me alert.', ENGLISH)
         return ENGLISH
     elif check_item(Kor, '한국어') or check_item(Kor, '한국') or check_item(Eng, 'korea') or check_item(Eng, 'korean') or check_item(Esp, 'coreano'):
-        universal_talk('한국어를 선택하셨습니다. 만나서 반갑습니다. 에스 키를 눌르면 활성화됩니다.', KOREAN)
+        universal_talk('한국어를 선택하셨습니다. 만나서 반갑습니다. 에스 키를 누르면 활성화됩니다.', KOREAN)
         return KOREAN
     elif check_item(Esp, 'español') or check_item(Kor, '스페인어') or check_item(Eng, 'spanish'):
         universal_talk('Usted he seleccionado español. Bienvenido!', ESPANOL)
@@ -74,7 +74,7 @@ def getKey():
 
 """Actual Home"""
 if __name__ == "__main__":
-    if len(sys.argv) != 1:
+    if len(sys.argv) == 2:
         if sys.argv[1] == '-korean':
             language = KOREAN
         elif sys.argv[1] == '-english':
@@ -84,6 +84,9 @@ if __name__ == "__main__":
         else:
             print('Invalid language argument error! Set language to default.')
             language = DEFAULT_LANGUAGE
+    elif len(sys.argv) > 2:
+        print('Multiple language input error! Set to default language.')
+        language = DEFAULT_LANGUAGE
     else:
         language = language_inquiry(False)
     print("Press 's' key to make an order")

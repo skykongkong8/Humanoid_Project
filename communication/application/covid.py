@@ -1,16 +1,25 @@
+from home import ENGLISH, ESPANOL, KOREAN
 from mode import check_item, split_string
 # covid.py
 # COVID 19 for today, yesterday, and day before yesterday in Republic Of Korea
 # 주석 처리된 부분은 추후 오류점검에 도움이 되므로, 구태여 지우지 말 것
 
-def msg_handle(string):
+def universal_msg_handle(string, language):
+    if language == ENGLISH:
+        return msg_handle_ENG(string)
+    elif language == KOREAN:
+        return msg_handle_KOR(string)
+    elif language == ESPANOL:
+        return msg_handle_ESP(string)
+
+def msg_handle_KOR(string):
     """Sort for data, double check with isit_covid"""
     isit_covid = False
     day = 0 #(0: default, 1: 오늘, 2:어제, 3:그저께)
     my_list = split_string(string)
     print(string)
     #0 기본 언어 : 코로나, 확진자, 몇, 명
-    if check_item(my_list, '코로나') or check_item(my_list, 'covid'):
+    if check_item(my_list, '코로나'):
         if check_item(my_list, '명') or check_item(my_list, '확진자') or check_item(my_list, '수'):
             isit_covid = True
     #1 오늘
@@ -26,6 +35,30 @@ def msg_handle(string):
         print('무슨 말인지 알아들을 수 없습니다!')
     return [isit_covid, day]
 
+def msg_handle_ENG(string):
+    """Sort for data, double check with isit_covid"""
+    isit_covid = False
+    day = 0 #(0: default, 1: 오늘, 2:어제, 3:그저께)
+    my_list = split_string(string)
+    print(string)
+    #0 기본 언어 : 코로나, 확진자, 몇, 명
+    if check_item(my_list, 'corona') or check_item(my_list, 'covid'):
+        isit_covid = True
+    #1 오늘
+    if check_item(my_list, 'today'):
+        day = 1
+    #2 어제
+    elif check_item(my_list, 'yesterday'):
+        day = 2
+    #3 그저께
+    elif check_item(my_list, 'before') and check_item(my_list, 'yesterday'):
+        day = 3
+    else:
+        print('Invalid date input!')
+    return [isit_covid, day]
+
+def msg_handle_ESP(string):
+    pass
 
 
 def today_Patient():
@@ -136,8 +169,10 @@ def past_Patient():
 
 def Daily_Patient():
     try:
+        """오늘 확진자가 발표되었음"""
         return today_Patient()
     except:
+        """오늘 확진자가 아직 발표되지 않았음"""
         return past_Patient()
 
 # print(Daily_Patient())

@@ -1,3 +1,4 @@
+################################################################################################################
 # mode.py
 # Originally, mode selection should be done by NLP, analyzing the given sentence by syntax. 
 # However in this case, since the system is simple enough, we just use classification function like following...
@@ -12,6 +13,8 @@ VOLUME = 3
 CLOCK = 4
 TIMER = 5
 JOKE = 6
+
+HOUSE_PARTY_PROTOCOL = 999
 
 def check_item(my_list, word):
     flag = False
@@ -42,6 +45,8 @@ def mode_selection_eng(string):
         return TIMER
     elif check_item(my_list, 'joke') or check_item(my_list, 'jokes') or (check_item(my_list, 'funny') and (check_item(my_list, 'story') or check_item(my_list, 'stories'))):
         return JOKE
+    elif check_item(my_list, 'protocol') and (check_item(my_list, 'house') or check_item(my_list, 'party'), check_item(my_list, 'final')):
+        return HOUSE_PARTY_PROTOCOL
 
     else:
         return UNKNOWN_ERROR
@@ -63,6 +68,8 @@ def mode_selection_kor(string):
         return TIMER
     elif check_item(my_list, '농담') or ((check_item(my_list, '재미있는') or check_item(my_list, '재밌는')) and (check_item(my_list, '이야기') or check_item(my_list, '얘기'))):
         return JOKE
+    elif (check_item(my_list, '전부') or check_item(my_list, '다')) and check_item(my_list, '보여줘'):
+        return HOUSE_PARTY_PROTOCOL
     else:
         return UNKNOWN_ERROR
 

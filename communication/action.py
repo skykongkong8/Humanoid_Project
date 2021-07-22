@@ -1,5 +1,6 @@
+from mode import UNKNOWN_ERROR, GREETING, COVID, BRIGHTNESS, VOLUME, CLOCK, TIMER, JOKE, HOUSE_PARTY_PROTOCOL
 from organs.mouth import universal_talk
-from application.covid import msg_handle, Daily_Patient
+from application.covid import universal_msg_handle, Daily_Patient
 from application.timer import timertime_KOR, timertime_ENG
 from application.clock import clock
 from application.brightness import brightness
@@ -7,16 +8,6 @@ from application.volume import volume
 from application.joke import joke
 from time import sleep
 # import threading
-
-"""ACTION TASKS"""
-UNKNOWN_ERROR = -1
-GREETING = 0
-COVID = 1
-BRIGHTNESS = 2
-VOLUME = 3
-CLOCK = 4
-TIMER = 5
-JOKE = 6
 
 class Action():
     def __init__(self, language, master):
@@ -41,6 +32,11 @@ class Action():
                 return eng_action.clock_ENG()
             elif mode_number == TIMER:
                 return eng_action.timer_ENG()
+            elif mode_number == JOKE:
+                return eng_action.joke_ENG()
+            
+            elif mode_number == HOUSE_PARTY_PROTOCOL:
+                return eng_action.house_party_protocol_ENG()
             else:
                 universal_talk('Sorry, requested service is not readied yet.',self.language)
         
@@ -63,6 +59,9 @@ class Action():
                 return kor_action.timer_KOR()
             elif mode_number == JOKE:
                 return kor_action.joke_KOR()
+            
+            elif mode_number == HOUSE_PARTY_PROTOCOL:
+                return kor_action.house_party_protocol_KOR()
             else:
                 return universal_talk('죄송해요, 요청하신 서비스는 아직 서비스 준비중입니다.', self.language)
 
@@ -100,14 +99,14 @@ class EngAction(Action):
         print('Press ctrl+C to quit')
         try:
             what_said = self.master
-            if msg_handle(what_said)[0]:
-                if msg_handle(what_said)[1] == 0:
+            if universal_msg_handle(what_said)[0]:
+                if universal_msg_handle(what_said)[1] == 0:
                     universal_talk('Sorry, I only know about today, yesterday, and day before yesterday. Search internet for more detailed information.',self.language)
-                elif msg_handle(what_said)[1] == 1:
+                elif universal_msg_handle(what_said)[1] == 1:
                     universal_talk('Reported COVID patient number for today is {}.'.format(Daily_Patient()[-1]),self.language)
-                elif msg_handle(what_said)[1] == 2:
+                elif universal_msg_handle(what_said)[1] == 2:
                     universal_talk('Reported COVID patient number for yesterday is {}.'.format(Daily_Patient()[-2]),self.language)
-                elif msg_handle(what_said)[1] == 3:
+                elif universal_msg_handle(what_said)[1] == 3:
                     universal_talk('Reported COVID patient number for day before yesterday is {}.'.format(Daily_Patient()[-3]),self.language)
             else:
                 universal_talk('Sorry, I only know about COVID patient number, please search internet for more information.',self.language)
@@ -194,6 +193,16 @@ class EngAction(Action):
         universal_talk('ha ha ha', self.language)
 
 
+    def house_party_protocol_ENG(self):
+        universal_talk('Activate house party protocol! Let me show you some of my representative functions at the same time.', self.language)
+        self.master += ' 3 seconds'
+        self.clock_ENG()
+        self.timer_ENG()
+        self.joke_ENG()
+        universal_talk('house party protocol deactivated.', self.language)
+        
+
+
 class KorAction(Action):
     def __init__(self, language, master):
         """Second-order classification of actions: by Tasks"""
@@ -203,14 +212,14 @@ class KorAction(Action):
         print('Press ctrl+C to quit')
         try:
             what_said = self.master
-            if msg_handle(what_said)[0]:
-                if msg_handle(what_said)[1] == 0:
+            if universal_msg_handle(what_said)[0]:
+                if universal_msg_handle(what_said)[1] == 0:
                     universal_talk('죄송해요, 오늘, 어제, 그저께에 대한 정보만 지원하고 있습니다. 더 자세한 정보는 보건복지부 홈페이지를 참조하여 주세요.', self.language)
-                elif msg_handle(what_said)[1] == 1:
+                elif universal_msg_handle(what_said)[1] == 1:
                     universal_talk('오늘 코로나19 확진자 수는 {}명입니다.'.format(Daily_Patient()[-1]), self.language)
-                elif msg_handle(what_said)[1] == 2:
+                elif universal_msg_handle(what_said)[1] == 2:
                     universal_talk('어제 코로나19 확진자 수는 {}명입니다.'.format(Daily_Patient()[-2]), self.language)
-                elif msg_handle(what_said)[1] == 3:
+                elif universal_msg_handle(what_said)[1] == 3:
                     universal_talk('그저께 코로나19 확진자 수는 {}명입니다.'.format(Daily_Patient()[-3]), self.language)
             else:
                 universal_talk('죄송해요, 코로나 확진자 수 알림 기능만을 지원하고 있습니다. 다른 답변은 드릴 수가 없네요.', self.language)
@@ -268,6 +277,14 @@ class KorAction(Action):
         sleep(1)
         universal_talk('하 하 하', self.language)
 
+
+    def house_party_protocol_KOR(self):
+        universal_talk('제가 할 수 있는 것들 중 몇 가지만 소개드릴게요. 예를 들어,', self.language)
+        self.master += ' 오늘'
+        self.covid_KOR()
+        self.clock_KOR()
+        self.joke_KOR()
+        universal_talk('이상입니다!', self.language)
 
 
 class EspAction(Action):
