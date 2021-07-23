@@ -13,16 +13,25 @@ git clone https://github.com/skykongkong8/Artificial_Intelligence.git
 3. move to [communication](https://github.com/skykongkong8/Artificial_Intelligence/tree/main/communication) directory
 4. Prepare your microphone and speaker. Connect them with your PC.
 5. Run home.py (Please check your libraries before running) 
+```python
+python home.py
+```
+  * After inserting this code on your cmd, it will ask you for your language.
+```python
+python home.py -your_language
+```
+  * You can simply skip the language selection part by inserting arguments like: -english, -korean, -spanish
 > for Python 3.8 or above, PyAudio cannot be downloaded. However, you can download it by using [pipwin](https://pypi.org/project/pipwin/) instead of pip3.    
 > *PyAudio is essential for speech_recognition. However, if you substitute it with other STT algorithm, you may neglect this condition.* 
-6. Choose your language setting, press keyboard 's' to start, and say hi:
+7. Choose your language setting, press keyboard 's' to start, and say hi:
 * Baisc sample functions:
     * LIVE Daily COVID 19 patients of Republic of Korea
         * you should get your own service key from [here](https://www.data.go.kr/) to get your own authorization from the Korean government.
     * Clock
     * Timer
     * Joke
-
+    * House Party Protocol
+      * I recommend you to try this function if you are running the code first time. Say 'Activate house party protocol' to your microphone. 
 ## Description
 from """Actual Home""",   
 * `language = language_inquiry(False)` ask for your language.
