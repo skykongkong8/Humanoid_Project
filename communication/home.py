@@ -2,6 +2,8 @@ from action import Action
 from organs.ears import Listen
 from organs.mouth import universal_talk
 from mode import universal_mode_selection, check_item, split_string
+from constant_variables import*
+import socket
 import os
 import sys
 import gc
@@ -10,7 +12,7 @@ if os.name == 'nt':
 else:
     import tty
     import termios
-from constant_variables import*
+
 
 
 """ __Simple Rules__
@@ -18,10 +20,6 @@ from constant_variables import*
     2. Listen
     3. Action
 """
-
-"""basic format"""
-# AudioData = listen()
-# talk_kr(AudioData[1])
 
 def language_inquiry(flag)->int:
     """Ask for user's language"""
@@ -67,44 +65,59 @@ def getKey():
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
         return key
 
+def check_internet_connection()->bool:
+    address = socket.gethostbyname(socket.gethostname())
+    if address == "127.0.0.1":
+        print("Internet Unavailable")
+        return False
+    else:
+        print("Internet available to: " + address)
+        return True
+
+def language_by_argument(argument)->int:
+    if len(argument) == 2:
+        if argument[1] == '-korean':
+            return KOREAN
+        elif argument[1] == '-english':
+            return ENGLISH
+        elif argument[1] == '-spanish':
+            return ESPANOL
+        else:
+            print('Invalid language argument error! Set language to default.')
+            return DEFAULT_LANGUAGE
+    elif len(argument) > 2:
+        print('Multiple language input error! Set language to default.')
+        return DEFAULT_LANGUAGE
+    else:
+        return language_inquiry(False)
 
 """Actual Home"""
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        if sys.argv[1] == '-korean':
-            language = KOREAN
-        elif sys.argv[1] == '-english':
-            language = ENGLISH
-        elif sys.argv[1] == '-spanish':
-            language = ESPANOL
-        else:
-            print('Invalid language argument error! Set language to default.')
-            language = DEFAULT_LANGUAGE
-    elif len(sys.argv) > 2:
-        print('Multiple language input error! Set to default language.')
-        language = DEFAULT_LANGUAGE
-    else:
-        language = language_inquiry(False)
-    print("Press 's' key to make an order")
-    try:
-        while True:
-            key = getKey()
-            if key == 's':
-                master = Listen().listen()[language]
-                mode_number = universal_mode_selection(master, language)
-                Action(language, master).universal_action(mode_number)
-            if key == 'e':
-                break
-            else:
-                pass
-    except KeyboardInterrupt:
-        print('Keyboard interrupt abort')
-    finally:
-        """Add code here if you want to order any final tasks"""
-        gc.collect(generation=2)
+    if check_internet_connection():
+        language = language_by_argument(sys.argv)
+        print("Press 's' key to make an order")
         try:
-            os.remove('sample_1.mp3')
-        except:
+            while True:
+                key = getKey()
+                if key == 's':
+                    master = Listen().listen()[language]
+                    mode_number = universal_mode_selection(master, language)
+                    Action(language, master).universal_action(mode_number)
+                if key == 'e':
+                    break
+                else:
+                    pass
+        except KeyboardInterrupt:
+            print('Keyboard interrupt abort')
+        finally:
+            """Add code here if you want to order any final tasks"""
+            gc.collect(generation=2)
+            try:
+                os.remove('sample_1.mp3')
+            except:
+                pass
+            print('Goodbye.')
             pass
-        print('Goodbye.')
+    else:
+        """Offline Condition: use 'vosk'"""
         pass
