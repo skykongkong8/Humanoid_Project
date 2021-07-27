@@ -3,7 +3,7 @@ import speech_recognition as sr
 """EARS MODULE FOR SPEECH RECOGNITION"""
 
 class Listen():
-    def listen(self):
+    def listen(self)->list:
         # obtain audio from the microphone - PREREQUISITE: PyAduio 0.2.11 or later version
 
         """if you want to adjust the minimum energy threshold"""

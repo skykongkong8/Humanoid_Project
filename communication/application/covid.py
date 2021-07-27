@@ -17,7 +17,7 @@ def universal_msg_handle(string, language):
     elif language == ESPANOL:
         return msg_handle_ESP(string)
 
-def msg_handle_KOR(string):
+def msg_handle_KOR(string)->list:
     """Sort for data, double check with isit_covid"""
     isit_covid = False
     day = 0 #(0: default, 1: 오늘, 2:어제, 3:그저께)
@@ -40,7 +40,7 @@ def msg_handle_KOR(string):
         print('무슨 말인지 알아들을 수 없습니다!')
     return [isit_covid, day]
 
-def msg_handle_ENG(string):
+def msg_handle_ENG(string)->list:
     """Sort for data, double check with isit_covid"""
     isit_covid = False
     day = 0 #(0: default, 1: 오늘, 2:어제, 3:그저께)
@@ -66,7 +66,7 @@ def msg_handle_ESP(string):
     pass
 
 
-def today_Patient():
+def today_Patient()->list:
     today = datetime.now()
     past = datetime.now()-timedelta(days=3)
 
@@ -112,7 +112,7 @@ def today_Patient():
         daily_patient.append(decideCnt[i]-decideCnt[i-1])
     return daily_patient
 
-def past_Patient():
+def past_Patient()->list:
     yesterday = datetime.now()-timedelta(days=1)
     past = datetime.now()-timedelta(days=4)
 

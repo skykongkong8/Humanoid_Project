@@ -9,7 +9,7 @@ def universal_timertime(master, language):
     elif language == ESPANOL:
         return timertime_ESP(master)
 
-def timertime_KOR(master):
+def timertime_KOR(master)->float:
     """extract time property from master order"""
     p = re.compile('(\d)+')
     q = re.compile('분|초|시간|중지|정지|그만')
@@ -30,7 +30,7 @@ def timertime_KOR(master):
         t = -1
     return t     
 
-def timertime_ENG(master):
+def timertime_ENG(master)->float:
     """extract time property from master order"""
     p = re.compile('(\d)+')
     q = re.compile('minutes|seconds|hours|stop|done|minute|hour')

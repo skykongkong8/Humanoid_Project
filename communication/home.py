@@ -4,8 +4,8 @@ from organs.mouth import universal_talk
 from mode import universal_mode_selection, check_item, split_string
 from constant_variables import*
 import socket
-import os
 import sys
+import os
 import gc
 if os.name == 'nt':
     import msvcrt
@@ -74,7 +74,8 @@ def check_internet_connection()->bool:
         print("Internet available to: " + address)
         return True
 
-def language_by_argument(argument)->int:
+def language_selection(argument)->int:
+    """language by argument, or manual input"""
     if len(argument) == 2:
         if argument[1] == '-korean':
             return KOREAN
@@ -94,9 +95,9 @@ def language_by_argument(argument)->int:
 """Actual Home"""
 if __name__ == "__main__":
     if check_internet_connection():
-        language = language_by_argument(sys.argv)
-        print("Press 's' key to make an order")
         try:
+            language = language_selection(sys.argv)
+            print("Press 's' key to make an order")
             while True:
                 key = getKey()
                 if key == 's':
@@ -120,4 +121,5 @@ if __name__ == "__main__":
             pass
     else:
         """Offline Condition: use 'vosk'"""
+        print('Offline version: T.B.A.')
         pass
