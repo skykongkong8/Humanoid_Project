@@ -244,7 +244,7 @@ class KorAction(Action):
 
     def clock_KOR(self):
         time_list = clock()
-        universal_talk('오늘은 {0}월 {1}일 {2}시 {3}분 입니다.'.format(time_list[0], time_list[1], time_list[2], time_list[3]), self.language)
+        universal_talk('지금은 {0}월 {1}일 {2}시 {3}분 입니다.'.format(time_list[0], time_list[1], time_list[2], time_list[3]), self.language)
     
     def _notification_KOR(self):
         for i in range(3):
