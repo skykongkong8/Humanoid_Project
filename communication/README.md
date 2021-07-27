@@ -2,6 +2,7 @@
 ### This is upgraded, and organized version of [AI_device_with_raspberryPi](https://github.com/skykongkong8/AI_device_with_RaspberryPi)
 ### Supports Windows 10, Linux OS
 ### Supports Korean, English, Español (T.B.A.)
+### Runs at online condition. You should use other stt package such as [vosk](https://github.com/alphacep/vosk-api) for offline uses.
 #### Required External Libraries: PyAudio, threading, speech_recognition, gtts, playsound, urllib, requests, xml.etree.ElementTree
 
 
