@@ -7,7 +7,8 @@ Communication functionality with TTS STT algorithm libraries(+ extremely primiti
 Applicable as artificial intelligence speaker like siri, or Jarvis!    
     
 ### 3. Manipulation
-T.B.A.
+* [i611 Zeus Robot Arm](https://github.com/skykongkong8/i611_RobotManipulator)
+* Open Manipulator (T.B.A.)
 ### 4. Locomotion
 T.B.A.
 ### 5. Navigation
