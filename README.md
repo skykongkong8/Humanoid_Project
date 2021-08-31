@@ -14,7 +14,7 @@ Applicable as artificial intelligence speaker like siri, or Jarvis!
 ### 4. Locomotion
 T.B.A.
 ### 5. Navigation
-* [Here](https://github.com/Guerilla-Coders/Delievery-Arcade-Agent) my team made navigating code for turtlebot3 with custom datasets and functions
+* [Here](https://github.com/Guerilla-Coders/Delievery-Arcade-Agent) you can find my team made navigating code for turtlebot3 with custom datasets and functions
 ### 6. Physical Features
 T.B.A.
 License is for communication directory only. YOLO directory is just for personal trial by far.
